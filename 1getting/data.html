@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>tf.data.Dataset 다루기</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+</head>
+<body>
+  <h1>1. Array 로부터 Dataset 생성</h1>
+  <h1>2. CSV 부터 Dataset 생성</h1>
+  <h1>3. CSV의 특정 Column만으로 dataset 생성</h1>
+  <script>
+    // 1. Array 로부터 Dataset 생성
+
+    // object로 이루어진 array 로부터 Dataset 생성
+    // forEachAsync(f) - 데이터 세트의 모든 요소에 함수 적용
+
+    // async function run1() {
+    //   const myArray = [
+    //     {x:[1,0,9], y:10},
+    //     {x:[5,1,3], y:11},
+    //     {x:[1,1,9], y:12}
+    //   ]      
+    //   console.log(myArray)    // 배열, 자바스크립트 형식
+
+    //   // tf.js 데이터셋 생성
+    //   const myFirstData = tf.data.array(myArray)
+    //   console.log(myFirstData)
+
+    //   // 데이터셋의 각 요소를 비동기적으로 콘솔에 출력
+    //   await myFirstData.forEachAsync(e => console.log(e))
+    //   console.log("Array Dataset Print 완료")
+    // }
+    // run1()
+
+
+    // 2. CSV 부터 Dataset 생성
+
+    // http://127.0.0.1:5500/tensorflow/1getting/data.html
+    // async function run2() {
+    //   const host = window.location.host;    // 127.0.0.1:5500
+    //   console.log("host? : " + host)
+
+    //   // csv 파일 url생성. 절대경로
+    //   // const url = "http://"+host+"/tensorflow/1getting/kc_house_data.csv"
+    //   const url = `http://${host}/tensorflow/1getting/kc_house_data.csv`
+    //   console.log("url? : " + url)
+
+    //   // csv파일에서 TensorFlow.js 데이터셋 생성
+    //   const csvDataset = tf.data.csv(url)
+    //   console.log("csvDataset? : " + csvDataset)
+
+    //   // 처음 10개 요소를 배열로 변환생성
+    //   const data = await csvDataset.take(10).toArray();
+    //   console.log(data)
+
+    //   // csv파일의 열 이름을 콘솔에 출력
+    //   console.log(await csvDataset.columnNames())
+
+    //   // csv파일의 열 개수 계산
+    //   const numCols = (await csvDataset.columnNames()).length;
+    //   // console.log(`column 개수 = ${numCols}`)
+    //   console.log("column 개수 = " + numCols)
+    // }
+    // run2()
+
+
+    // 3. CSV의 특정 Column만으로 dataset 생성
+
+    async function run3() {
+      // 데이터셋 생성, 상대경로
+      const houseSalesDataset = tf.data.csv("kc_house_data.csv", {
+        columnConfigs : {
+          // isLabel : false=> 데이터, isLabel : true=> 정답
+          bedrooms : {isLabel : false},
+          sqft_living : {isLabel : false},
+          price : {isLabel : true}
+        },
+        // 내가 위에서 설정한 것만 가져오겠다. 
+        configuredColumnsOnly : true
+      })
+      // 그러면 데이터는 xs로, 정답은 ys로 표현된다. 
+      console.log(await houseSalesDataset.take(5).toArray())
+
+      // 시각화
+      const dataPoints = await houseSalesDataset.map(({xs, ys}) => ({
+        x : xs.sqft_living,
+        y : ys.price
+      })).toArray();
+
+      console.log(dataPoints)
+    }
+    run3()
+
+  </script>
+</body>
+</html>

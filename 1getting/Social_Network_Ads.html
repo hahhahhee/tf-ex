@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Binary Classification : Social_Network_Ads</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="./js/Social_Network_Ads.js"></script>
+  <style>
+    body {
+      margin: 10px 20px 30px 40px
+    }
+  </style>
+</head>
+<body>
+  <h1>Binary Classification of Social_Network_Ads</h1>
+  <button type="button" class="btn btn-outline-info" onclick="toggleVisor()">Toggle Visor</button><br><br>
+  <div id="model-status">No trained model</div>
+  <div id="testing-status"></div>
+
+  <button type="button" class="btn btn-warning" id="train-button" disabled onclick="train()">Train New Model</button><br><br>
+  <input id="predict-input-1" placeholder="Gender F:0, M:1" /><br>
+  <input id="predict-input-2" placeholder="Age 27" /><br>
+  <input id="predict-input-3" placeholder="Salary 57000" /><br>
+
+  <button type="button" class="btn btn-info mt-1" id="predict-button" disabled onclick="predict()">Predict new Data</button><br>
+  <div id="predict-output" class="mt-1"></div>
+</body>
+</html>

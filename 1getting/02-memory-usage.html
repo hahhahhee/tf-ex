@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+</head>
+<body>
+  <script>
+    const a = tf.tensor2d([1,2,3,4], [2,2]);
+    const b = tf.tensor2d([1,2,3,4,5,6], [2,3]);
+    a.print()
+    b.print()
+    // 메모리상의 텐서의 갯수
+    console.log(tf.memory().numTensors)   // 2
+    // a텐서를 지운다
+    a.dispose()
+    console.log(tf.memory().numTensors)   // 1
+    // b텐서도 지운다
+    b.dispose()
+    console.log(tf.memory().numTensors)   // 0
+
+    // 실습을 위하여 텐서를 100개 만들어 보자
+    // function run() {
+    //   for(let i=0; i<100; i++) {
+    //     const t = tf.tensor([i])
+    //   }
+    // }
+    // run()
+
+    // tf.tidy()안에서 만든 텐서는 tidy안을 벗어나면 사라진다. 
+    function run1() {
+      tf.tidy(() => {
+        for(let i=0; i<100; i++) {
+          const t = tf.tensor([i])
+        }
+        // console.log(tf.memory().numTensors)    // 100
+      })
+    }
+
+    run1()
+    console.log(tf.memory().numTensors)
+  </script>
+</body>
+</html>
